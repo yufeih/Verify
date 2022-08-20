@@ -2682,6 +2682,25 @@ Line2"
             .ScrubMember("Ignore");
     }
 
+    [Fact]
+    public Task ScrubDictionaryValueInstance()
+    {
+        var target = new Dictionary<string, object>
+        {
+            {
+                "Key1", new Dictionary<string, string>
+                {
+                    {"Key1", "Ignore"},
+                    {"Key2", "Value2"}
+                }
+            },
+            {"Key2", "Ignore"},
+            {"Key3", "Value4"}
+        };
+        return Verify(target)
+            .ScrubInstance<string>(_ => _ == "Ignore");
+    }
+
     class IgnoreExplicitTarget
     {
         public string Include;
