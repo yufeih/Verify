@@ -6,7 +6,7 @@
     <DiffEngine>true</DiffEngine>
     <DiffEngine Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' OR $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' ">false</DiffEngine>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">10.0</SupportedOSPlatformVersion>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">30</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="$(DiffEngine)">
     <DefineConstants>$(DefineConstants);DiffEngine</DefineConstants>
