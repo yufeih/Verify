@@ -1,4 +1,6 @@
-﻿static class VerifyExceptionMessageBuilder
+﻿using DiffMatchPatch;
+
+static class VerifyExceptionMessageBuilder
 {
     public static string Build(
         string directory,
@@ -118,13 +120,26 @@
         var verifiedPath = IoHelpers.GetRelativePath(directory, item.VerifiedPath);
         if (message is null)
         {
-            builder.AppendLineN(
-                $"""
-                Received: {receivedPath}
-                {notEqual.ReceivedText}
-                Verified: {verifiedPath}
-                {notEqual.VerifiedText}
-                """ );
+            if ((notEqual.ReceivedText != null && notEqual.ReceivedText.Length > 100) ||
+                (notEqual.VerifiedText != null && notEqual.VerifiedText.Length > 100))
+            {
+                var diff = Diff.Compute($"{notEqual.ReceivedText}", $"{notEqual.VerifiedText}");
+                builder.AppendLineN(
+                    $"""
+                    Received -> Verified: {receivedPath} -> {verifiedPath}
+                    {diff.ToReadableText()}
+                    """ );
+            }
+            else
+            {
+                builder.AppendLineN(
+                    $"""
+                    Received: {receivedPath}
+                    {notEqual.ReceivedText}
+                    Verified: {verifiedPath}
+                    {notEqual.VerifiedText}
+                    """ );
+            }
         }
         else
         {
